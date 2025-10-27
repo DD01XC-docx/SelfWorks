@@ -1,0 +1,20 @@
+cloud-security-portfolio/
+│
+├── index.html
+├── styles/
+│   ├── main.css
+│   ├── components/
+│   │   ├── cloud-diagram.css    # НОВОЕ: схемы облачной инфраструктуры
+│   │   ├── compliance-table.css # НОВОЕ: таблицы соответствия стандартам
+│   │   └── ...
+│   └── utils/
+│       ├── cloud-variables.css  # Цвета облачных провайдеров
+│       └── ...
+│
+├── scripts/
+│   ├── cloud-animations.js      # Анимации облачных компонентов
+│   └── ...
+└── images/
+    ├── aws-architecture.png
+    ├── azure-security.png
+    └── ...

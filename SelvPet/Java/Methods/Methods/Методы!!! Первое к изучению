@@ -1,0 +1,100 @@
+🧱 Базовые классы и методы
+🔹 String
+
+length(), charAt(), substring(), indexOf(), split(), replace(), toLowerCase()/toUpperCase(), trim(), equals()/equalsIgnoreCase(), contains().
+
+💡 Научись использовать StringBuilder и StringBuffer — для конкатенации в цикле.
+
+🔹 Math
+
+abs(), max(), min(), pow(), sqrt(), random(), round(), ceil(), floor().
+
+Очень частая база при работе с числами и алгоритмами.
+
+🔹 Arrays / Collections
+
+Arrays.sort(), Arrays.toString(), Arrays.asList().
+
+Collections.sort(), Collections.reverse(), Collections.max(), Collections.min().
+
+💡 Знать отличия: List, Set, Map, Queue и их реализации (ArrayList, LinkedList, HashSet, HashMap, TreeMap, PriorityQueue).
+
+🔹 Object
+
+equals(), hashCode(), toString(), clone().
+
+💡 Это критично — переопределение equals и hashCode лежит в основе корректной работы коллекций.
+
+🔹 System
+
+System.out.println(), System.currentTimeMillis(), System.nanoTime(), System.exit(), System.getenv(), System.getProperty().
+
+⏱ Работа с датами / временем (новое API)
+
+LocalDate, LocalTime, LocalDateTime, Instant, Duration, Period, DateTimeFormatter.
+
+💡 Старое Date / Calendar знать для понимания legacy-кода, но не использовать в новых проектах.
+
+🧮 Streams + Lambdas (Java 8+)
+
+Методы:
+filter(), map(), forEach(), collect(), count(), distinct(), sorted(), anyMatch(), allMatch(), noneMatch(), findFirst(), reduce().
+
+💡 Без уверенного владения Stream API — ты просто не сможешь писать современный Java-код.
+
+📦 Исключения (Exceptions)
+
+Уметь:
+try-catch-finally, throw, throws, try-with-resources.
+
+Разница между checked и unchecked.
+
+Классы: IOException, RuntimeException, NullPointerException, IllegalArgumentException, NumberFormatException.
+
+🧰 Ввод / вывод (I/O, NIO)
+
+Files.readAllLines(), Files.write(), Files.newBufferedReader(), Files.walk(), Paths.get().
+
+💡 Знать про try-with-resources и автоматическое закрытие потоков.
+
+🔁 Generic-и и Collections API
+
+Уметь писать: List<String> list = new ArrayList<>();
+
+Понимать wildcard’ы: <? extends T>, <? super T>.
+
+Знать, зачем нужны Comparable, Comparator и как их использовать с Collections.sort() и Stream.sorted().
+
+🧗 2. УРОВЕНЬ 2 — Осваивать после уверенности в базисе
+⚙️ Reflection API
+
+Позволяет исследовать классы и методы во время выполнения (Class.forName(), getMethods(), invoke()).
+
+Полезно для фреймворков, DI, сериализации, ORM (Hibernate, Spring и т.д.).
+
+⚡ Concurrency (Параллелизм)
+
+Thread, Runnable, Callable, ExecutorService, Future.
+
+Коллекции из java.util.concurrent: ConcurrentHashMap, BlockingQueue, CopyOnWriteArrayList.
+
+💡 Это отдельный большой пласт, изучай после освоения базового ООП и Stream API.
+
+📡 Networking
+
+Socket, ServerSocket, HttpClient (новый из Java 11+).
+
+Полезно для понимания клиент-серверных приложений.
+
+💾 Serialization / JSON
+
+ObjectOutputStream, ObjectInputStream,
+плюс библиотеки вроде Jackson / Gson (для JSON).
+
+💡 Уметь сериализовать объекты — полезно в REST, микросервисах и кэшировании.
+
+🧱 Design Patterns (Шаблоны проектирования)
+
+Singleton, Factory, Builder, Strategy, Observer, Decorator, Proxy.
+
+Эти паттерны часто используются в реальных проектах на Spring / Java EE.

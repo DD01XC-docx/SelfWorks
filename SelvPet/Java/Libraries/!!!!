@@ -1,0 +1,83 @@
+Работа с файлами и вводом/выводом (I/O)
+
+java.io — старый, но фундаментальный пакет для работы с файлами, потоками (InputStream, OutputStream, Reader, Writer).
+
+java.nio и java.nio.file — современная альтернатива java.io, включает классы:
+
+Files — для чтения, записи, копирования и удаления файлов.
+
+Paths — для представления пути к файлу.
+
+FileChannel, ByteBuffer — для высокопроизводительной работы с файлами.
+
+///////////////////////////////////////////////////
+
+Коллекции и утилиты
+
+java.util — основной пакет с коллекциями и утилитами:
+
+ArrayList, HashMap, HashSet, LinkedList, TreeMap, и т.д.
+
+Collections — статические методы для сортировки, поиска, синхронизации.
+
+Arrays — работа с массивами.
+
+Random, Scanner, Date, Calendar.
+
+///////////////////////////////////////////////////
+
+Современное время и дата (Java 8+)
+
+java.time — новая система работы с датой и временем (замена Date и Calendar):
+
+LocalDate, LocalTime, LocalDateTime
+
+ZonedDateTime, Duration, Period, Instant
+
+DateTimeFormatter — форматирование и парсинг.
+
+///////////////////////////////////////////////////
+
+Потоки и параллелизм
+
+java.util.concurrent — набор инструментов для многопоточности:
+
+ExecutorService, Future, Callable
+
+ConcurrentHashMap, BlockingQueue, CountDownLatch
+
+CompletableFuture — для асинхронного программирования.
+
+///////////////////////////////////////////////////
+
+Работа с сетью
+
+java.net
+
+URL, HttpURLConnection — работа с HTTP-запросами.
+
+ServerSocket, Socket — для создания клиент-серверных приложений.
+
+///////////////////////////////////////////////////
+
+Работа со строками и регулярными выражениями
+
+java.lang — базовые классы (String, Math, Object, System).
+
+java.util.regex — работа с регулярками:
+
+Pattern, Matcher.
+
+///////////////////////////////////////////////////
+
+Дополнительно полезные пакеты
+
+java.math — точная математика (BigDecimal, BigInteger).
+
+java.security — шифрование и хеширование.
+
+java.sql — JDBC (работа с базами данных).
+
+javax.xml / javax.json — работа с XML/JSON (старый стиль, часто заменяется внешними библиотеками).
+
+
