@@ -1,0 +1,30 @@
+class Student {
+    String name;
+    public Student(String name) { this.name = name; }
+}
+
+class Teacher {
+    String name;
+    public Teacher(String name) { this.name = name; }
+}
+
+class ClassRoom {
+    private Teacher teacher;      // Агрегация
+    private List<Student> students; // Агрегация
+
+    public ClassRoom(Teacher teacher, List<Student> students) {
+        this.teacher = teacher;      // Учитель передаётся извне
+        this.students = students;    // Ученики тоже передаются извне
+    }
+}
+
+class School {
+    private List<ClassRoom> classes = new ArrayList<>(); // Композиция
+
+    public School() {
+        // Школа сама создаёт свои классы → композиция
+        Teacher t = new Teacher("Mrs. Smith");
+        students = List.of(new Student("Tom"), new Student("Anna"));
+        classes.add(new ClassRoom(t, students));
+    }
+}
