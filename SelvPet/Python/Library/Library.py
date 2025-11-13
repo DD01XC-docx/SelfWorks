@@ -1,36 +1,35 @@
-# ====== КЛАСС КНИГИ ======
 class Book:
     """
-    Класс для представления книги в библиотеке.
+    Class representing a book in the library.
     """
-    def __init__(self, title, author, year, condition="хорошее"):
+    def __init__(self, title, author, year, condition="good"):
         self.title = title
         self.author = author
         self.year = year
-        self.condition = condition  # "отличное", "хорошее", "плохое"
+        self.condition = condition  # "excellent", "good", "poor"
         self.is_available = True
         self.borrowed_by = None
 
     def get_status(self):
-        """Возвращает строку с полной информацией о книге."""
-        status = "доступна" if self.is_available else "выдана"
+        """Returns a string with full information about the book."""
+        status = "available" if self.is_available else "borrowed"
         if not self.is_available:
-            status += f" ({self.borrowed_by})"
+            status += f" (by {self.borrowed_by})"
         return f"{self.title} ({self.author}, {self.year}) - {status} ({self.condition})"
 
     def is_available_for_borrow(self):
-        """Проверяет, доступна ли книга для выдачи."""
-        return self.is_available and self.condition in ["отличное", "хорошее"]
+        """Checks whether the book can be borrowed."""
+        return self.is_available and self.condition in ["excellent", "good"]
 
     def set_condition(self, new_condition):
-        """Изменяет состояние книги."""
+        """Updates the book condition."""
         self.condition = new_condition
-        print(f"Состояние книги '{self.title}' изменено на: {new_condition}")
+        print(f"The condition of '{self.title}' has been updated to: {new_condition}")
 
-# ====== КЛАСС ЧИТАТЕЛЯ ======
+
 class Reader:
     """
-    Класс для представления читателя библиотеки.
+    Class representing a library reader.
     """
     def __init__(self, name, card_number):
         self.name = name
@@ -39,46 +38,45 @@ class Reader:
         self.has_debts = False
 
     def get_info(self):
-        """Возвращает информацию о читателе."""
+        """Returns information about the reader."""
         books_count = len(self.borrowed_books)
-        debt_status = "есть долги" if self.has_debts else "нет долгов"
-        books_list = ", ".join([book.title for book in self.borrowed_books]) if self.borrowed_books else "нет"
+        debt_status = "has debts" if self.has_debts else "no debts"
+        books_list = ", ".join([book.title for book in self.borrowed_books]) if self.borrowed_books else "none"
         
-        return f"Читатель: {self.name} (билет: {self.card_number})\n" \
-               f"Взято книг: {books_count}, Долги: {debt_status}\n" \
-               f"Книги: {books_list}"
+        return (f"Reader: {self.name} (card: {self.card_number})\n"
+                f"Borrowed books: {books_count}, Debts: {debt_status}\n"
+                f"Books: {books_list}")
 
     def can_borrow_more(self):
-        """Проверяет, может ли читатель взять еще книги."""
+        """Checks if the reader can borrow more books."""
         return len(self.borrowed_books) < 3 and not self.has_debts
 
     def borrow_book(self, book):
-        """Метод для взятия книги."""
+        """Attempts to borrow a book."""
         if not self.can_borrow_more():
-            return False, "Не может взять книгу: превышен лимит или есть долги"
+            return False, "Cannot borrow: limit exceeded or debts exist"
         
         if not book.is_available_for_borrow():
-            return False, f"Книга '{book.title}' недоступна для выдачи"
+            return False, f"The book '{book.title}' is not available for borrowing"
         
         book.is_available = False
         book.borrowed_by = self.name
         self.borrowed_books.append(book)
-        return True, f"Книга '{book.title}' успешно выдана"
+        return True, f"The book '{book.title}' was successfully borrowed"
 
     def return_book(self, book_title):
-        """Метод для возврата книги."""
+        """Returns a book."""
         for book in self.borrowed_books:
             if book.title == book_title:
                 book.is_available = True
                 book.borrowed_by = None
                 self.borrowed_books.remove(book)
-                return True, f"Книга '{book_title}' возвращена"
-        return False, f"Книга '{book_title}' не найдена у читателя"
+                return True, f"The book '{book_title}' has been returned"
+        return False, f"The book '{book_title}' was not found among borrowed books"
 
-# ====== КЛАСС БИБЛИОТЕКИ ======
 class Library:
     """
-    Класс, представляющий библиотеку и управляющий книгами и читателями.
+    Class representing a library that manages books and readers.
     """
     def __init__(self, name):
         self.name = name
@@ -86,168 +84,164 @@ class Library:
         self.readers = []
 
     def add_book(self, book):
-        """Добавляет книгу в библиотеку."""
+        """Adds a book to the library."""
         self.books.append(book)
-        print(f"Книга '{book.title}' добавлена в библиотеку")
+        print(f"Book '{book.title}' added to the library")
 
     def add_reader(self, reader):
-        """Регистрирует читателя в библиотеке."""
+        """Registers a reader in the library."""
         self.readers.append(reader)
-        print(f"Читатель {reader.name} зарегистрирован")
+        print(f"Reader {reader.name} registered")
 
     def find_book(self, title):
-        """Находит книгу по названию."""
+        """Finds a book by title."""
         for book in self.books:
             if book.title.lower() == title.lower():
                 return book
         return None
 
     def find_reader(self, name):
-        """Находит читателя по имени."""
+        """Finds a reader by name."""
         for reader in self.readers:
             if reader.name.lower() == name.lower():
                 return reader
         return None
 
     def borrow_book(self, reader_name, book_title):
-        """Основной метод выдачи книги."""
+        """Main borrowing method."""
         reader = self.find_reader(reader_name)
         book = self.find_book(book_title)
         
         if not reader:
-            return f"Ошибка: Читатель '{reader_name}' не найден"
+            return f"Error: Reader '{reader_name}' not found"
         
         if not book:
-            return f"Ошибка: Книга '{book_title}' не найдена"
+            return f"Error: Book '{book_title}' not found"
         
         success, message = reader.borrow_book(book)
         return message
 
     def return_book(self, reader_name, book_title):
-        """Метод для возврата книги."""
+        """Returns a book."""
         reader = self.find_reader(reader_name)
         if not reader:
-            return f"Ошибка: Читатель '{reader_name}' не найден"
+            return f"Error: Reader '{reader_name}' not found"
         
         success, message = reader.return_book(book_title)
         return message
 
     def list_available_books(self):
-        """Выводит список доступных книг."""
+        """Prints the list of available books."""
         available_books = [book for book in self.books if book.is_available_for_borrow()]
         if not available_books:
-            print("Нет доступных книг")
+            print("No available books")
             return
         
-        print("\n=== Доступные книги ===")
+        print("\n=== Available Books ===")
         for book in available_books:
             print(f"- {book.get_status()}")
 
     def list_all_books(self):
-        """Выводит список всех книг."""
-        print(f"\n=== Все книги библиотеки '{self.name}' ===")
+        """Prints all books."""
+        print(f"\n=== All Books in '{self.name}' ===")
         for book in self.books:
             print(f"- {book.get_status()}")
 
     def list_readers(self):
-        """Выводит список всех читателей."""
-        print(f"\n=== Зарегистрированные читатели ===")
+        """Prints all registered readers."""
+        print("\n=== Registered Readers ===")
         for reader in self.readers:
             print(reader.get_info())
 
-# ====== ТОЧКА ВХОДА (ОСНОВНАЯ ЛОГИКА ПРОГРАММЫ) ======
 if __name__ == "__main__":
-    # Создаем библиотеку
-    city_library = Library("Городская библиотека")
+    # Create library
+    city_library = Library("City Library")
     
-    # Создаем книги
-    book1 = Book("Преступление и наказание", "Фёдор Достоевский", 1866, "отличное")
-    book2 = Book("Война и мир", "Лев Толстой", 1869, "хорошее")
-    book3 = Book("Старая книга", "Неизвестный автор", 1800, "плохое")
-    book4 = Book("Мастер и Маргарита", "Михаил Булгаков", 1967, "отличное")
+    # Create books
+    book1 = Book("Crime and Punishment", "Fyodor Dostoevsky", 1866, "excellent")
+    book2 = Book("War and Peace", "Leo Tolstoy", 1869, "good")
+    book3 = Book("Old Book", "Unknown Author", 1800, "poor")
+    book4 = Book("The Master and Margarita", "Mikhail Bulgakov", 1967, "excellent")
     
-    # Добавляем книги в библиотеку
+    # Add books
     city_library.add_book(book1)
     city_library.add_book(book2)
     city_library.add_book(book3)
     city_library.add_book(book4)
     
-    # Создаем и регистрируем читателей
-    reader1 = Reader("Иван Петров", "Ч2024001")
-    reader2 = Reader("Мария Сидорова", "Ч2024002")
+    # Create and register readers
+    reader1 = Reader("Ivan Petrov", "R2024001")
+    reader2 = Reader("Maria Sidorova", "R2024002")
     
     city_library.add_reader(reader1)
     city_library.add_reader(reader2)
     
-    # Показываем начальное состояние
-    print("=== НАЧАЛЬНОЕ СОСТОЯНИЕ ===")
+    # Initial state
+    print("=== INITIAL STATE ===")
     city_library.list_all_books()
     city_library.list_readers()
     
-    # Тестируем различные сценарии
-    print("\n=== ТЕСТИРОВАНИЕ СИСТЕМЫ ===")
+    # Test cases
+    print("\n=== SYSTEM TESTING ===")
     
-    # Попытка взять книгу в плохом состоянии
-    print("\n1. Попытка взять книгу в плохом состоянии:")
-    result = city_library.borrow_book("Иван Петров", "Старая книга")
-    print(f"Результат: {result}")
+    # Attempt to borrow a book in poor condition
+    print("\n1. Attempt to borrow a book in poor condition:")
+    result = city_library.borrow_book("Ivan Petrov", "Old Book")
+    print(f"Result: {result}")
     
-    # Успешное взятие книги
-    print("\n2. Успешное взятие книги:")
-    result = city_library.borrow_book("Иван Петров", "Преступление и наказание")
-    print(f"Результат: {result}")
+    # Successful borrow
+    print("\n2. Successful borrow:")
+    result = city_library.borrow_book("Ivan Petrov", "Crime and Punishment")
+    print(f"Result: {result}")
     
-    # Попытка взять уже взятую книгу
-    print("\n3. Попытка взять уже взятую книгу:")
-    result = city_library.borrow_book("Мария Сидорова", "Преступление и наказание")
-    print(f"Результат: {result}")
+    # Borrowing already borrowed book
+    print("\n3. Attempt to borrow an already borrowed book:")
+    result = city_library.borrow_book("Maria Sidorova", "Crime and Punishment")
+    print(f"Result: {result}")
     
-    # Взятие второй книги
-    print("\n4. Взятие второй книги:")
-    result = city_library.borrow_book("Иван Петров", "Война и мир")
-    print(f"Результат: {result}")
+    # Borrow second book
+    print("\n4. Borrowing a second book:")
+    result = city_library.borrow_book("Ivan Petrov", "War and Peace")
+    print(f"Result: {result}")
     
-    # Взятие третьей книги
-    print("\n5. Взятие третьей книги:")
-    result = city_library.borrow_book("Иван Петров", "Мастер и Маргарита")
-    print(f"Результат: {result}")
+    # Borrow third book
+    print("\n5. Borrowing a third book:")
+    result = city_library.borrow_book("Ivan Petrov", "The Master and Margarita")
+    print(f"Result: {result}")
     
-    # Попытка взять четвертую книгу (превышение лимита)
-    print("\n6. Попытка взять четвертую книгу:")
-    book5 = Book("Евгений Онегин", "Александр Пушкин", 1833, "отличное")
+    # Attempt to borrow fourth book (limit exceeded)
+    print("\n6. Attempt to borrow a fourth book:")
+    book5 = Book("Eugene Onegin", "Alexander Pushkin", 1833, "excellent")
     city_library.add_book(book5)
-    result = city_library.borrow_book("Иван Петров", "Евгений Онегин")
-    print(f"Результат: {result}")
+    result = city_library.borrow_book("Ivan Petrov", "Eugene Onegin")
+    print(f"Result: {result}")
     
-    # Показываем текущее состояние
-    print("\n=== ТЕКУЩЕЕ СОСТОЯНИЕ ===")
+    # Current state
+    print("\n=== CURRENT STATE ===")
     city_library.list_all_books()
     city_library.list_readers()
     
-    # Возврат книги
-    print("\n7. Возврат книги:")
-    result = city_library.return_book("Иван Петров", "Война и мир")
-    print(f"Результат: {result}")
+    # Return book
+    print("\n7. Returning a book:")
+    result = city_library.return_book("Ivan Petrov", "War and Peace")
+    print(f"Result: {result}")
     
-    # Попытка другого читателя взять возвращенную книгу
-    print("\n8. Попытка взять возвращенную книгу:")
-    result = city_library.borrow_book("Мария Сидорова", "Война и мир")
-    print(f"Результат: {result}")
+    # Another reader borrows returned book
+    print("\n8. Borrowing the returned book:")
+    result = city_library.borrow_book("Maria Sidorova", "War and Peace")
+    print(f"Result: {result}")
     
-    # Финальное состояние
-    print("\n=== ФИНАЛЬНОЕ СОСТОЯНИЕ ===")
+    # Final state
+    print("\n=== FINAL STATE ===")
     city_library.list_all_books()
     city_library.list_readers()
     city_library.list_available_books()
     
-    # Тестирование читателя с долгами
-    print("\n=== ТЕСТ С ДОЛГАМИ ===")
-    reader3 = Reader("Алексей с долгами", "Ч2024003")
+    # Testing a reader with debts
+    print("\n=== DEBT TEST ===")
+    reader3 = Reader("Alex with Debts", "R2024003")
     reader3.has_debts = True
     city_library.add_reader(reader3)
     
-    result = city_library.borrow_book("Алексей с долгами", "Мастер и Маргарита")
-    print(f"Попытка взять книгу с долгами: {result}")
-
-       
-   
+    result = city_library.borrow_book("Alex with Debts", "The Master and Margarita")
+    print(f"Attempt to borrow with debts: {result}")
