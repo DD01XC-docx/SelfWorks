@@ -10,102 +10,100 @@ class VoiceAssistant:
         
     
         self.commands = {
-            'открой браузер': self.open_browser,
-            'запусти калькулятор': self.open_calculator,
-            'открой блокнот': self.open_notepad,
-            'включи музыку': self.open_music,
-            'открой почту': self.open_email,
-            'открой гитхаб': self.open_github,  
-            'открой github': self.open_github,   
-            'выключи компьютер': self.shutdown_pc,
-            'рабочий режим': self.work_mode,
-            'игровой режим': self.game_mode
+            'open browser': self.open_browser,
+            'start calculator': self.open_calculator,
+            'open notepad': self.open_notepad,
+            'play music': self.open_music,
+            'open email': self.open_email,
+            'open github': self.open_github,
+            'shut down computer': self.shutdown_pc,
+            'work mode': self.work_mode,
+            'game mode': self.game_mode
         }
     
     def open_browser(self):
-        """Открыть браузер"""
+        """Open browser"""
         webbrowser.open("https://google.com")
-        return "Открываю браузер"
+        return "Opening browser"
     
     def open_calculator(self):
-        """Открыть калькулятор"""
+        """Open calculator"""
         if os.name == 'nt':
             subprocess.Popen("calc.exe")
         else:
             subprocess.Popen(["gnome-calculator"])
-        return "Запускаю калькулятор"
+        return "Starting calculator"
     
     def open_notepad(self):
-        """Открыть блокнот"""
+        """Open notepad"""
         if os.name == 'nt':
             subprocess.Popen("notepad.exe")
         else:
             subprocess.Popen(["gedit"])
-        return "Открываю блокнот"
+        return "Opening notepad"
     
     def open_music(self):
-        """Открыть музыку"""
+        """Open music"""
         webbrowser.open("https://music.youtube.com")
-        return "Включаю музыку"
+        return "Playing music"
     
     def open_email(self):
-        """Открыть почту"""
+        """Open email"""
         webbrowser.open("https://gmail.com")
-        return "Открываю почту"
+        return "Opening email"
     
-    # ДОБАВЛЯЕМ НОВЫЙ МЕТОД ДЛЯ GITHUB
     def open_github(self):
-        """Открыть GitHub"""
+        """Open GitHub"""
         webbrowser.open("https://github.com")
-        return "Открываю GitHub"
+        return "Opening GitHub"
     
     def shutdown_pc(self):
-        """Выключение компьютера"""
-        confirm = input("Вы уверены, что хотите выключить компьютер? (да/нет): ")
-        if confirm.lower() == 'да':
+        """Shut down the computer"""
+        confirm = input("Are you sure you want to shut down the computer? (yes/no): ")
+        if confirm.lower() == 'yes':
             if os.name == 'nt':
                 os.system("shutdown /s /t 30")
             else:
                 os.system("shutdown -h now")
-            return "Выключаю компьютер через 30 секунд"
-        return "Отмена выключения"
+            return "Shutting down the computer in 30 seconds"
+        return "Shutdown canceled"
     
     def work_mode(self):
-        """Режим работы"""
+        """Work mode"""
         programs = ["notepad.exe", "calc.exe", "chrome.exe"]
         for program in programs:
             try:
                 subprocess.Popen(program)
             except:
                 pass
-        return "Запускаю рабочий режим"
+        return "Starting work mode"
     
     def game_mode(self):
-        """Игровой режим"""
+        """Game mode"""
         webbrowser.open("https://steam.com")
-        return "Запускаю игровой режим"
+        return "Starting game mode"
     
     def listen(self):
-        """Прослушивание голосовых команд"""
+        """Listen for voice commands"""
         try:
             with self.microphone as source:
-                print("Скажите команду...")
+                print("Say a command...")
                 self.recognizer.adjust_for_ambient_noise(source)
                 audio = self.recognizer.listen(source, timeout=5)
             
-            command = self.recognizer.recognize_google(audio, language='ru-RU').lower()
-            print(f"Распознано: {command}")
+            command = self.recognizer.recognize_google(audio, language='en-US').lower()
+            print(f"Recognized: {command}")
             return command
             
         except sr.WaitTimeoutError:
-            print("Время ожидания истекло")
+            print("Listening timeout")
             return None
         except sr.UnknownValueError:
-            print("Не удалось распознать речь")
+            print("Could not understand speech")
             return None
     
     def process_command(self, command):
-        """Обработка команды"""
+        """Process the given command"""
         if not command:
             return
         
@@ -115,18 +113,18 @@ class VoiceAssistant:
                 print(result)
                 return
         
-        print(f"Неизвестная команда: {command}")
-        print("Доступные команды:", list(self.commands.keys()))
+        print(f"Unknown command: {command}")
+        print("Available commands:", list(self.commands.keys()))
     
     def run(self):
-        """Основной цикл работы"""
-        print("Голосовой ассистент запущен!")
-        print("Доступные команды:", list(self.commands.keys()))
+        """Main loop"""
+        print("Voice assistant started!")
+        print("Available commands:", list(self.commands.keys()))
         
         while True:
             command = self.listen()
-            if command == 'стоп':
-                print("Ассистент завершает работу")
+            if command == 'stop':
+                print("Assistant shutting down")
                 break
             self.process_command(command)
 
